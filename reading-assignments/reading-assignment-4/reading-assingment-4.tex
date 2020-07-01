@@ -1,0 +1,65 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage[left=10mm,right=10mm]{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
+\usepackage[margin=10pt,font=small,labelfont=bf,labelsep=endash]{caption}
+% \usepackage{tikz}
+
+% Refererencing
+\usepackage[backend=biber,style=alphabetic]{biblatex}
+
+\microtypecontext{spacing=nonfrench}
+
+\graphicspath{ {./images/} }
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{14pt}
+\rhead{\thepage}
+\lhead{Reading Assignment 4}
+
+\begin{document}
+\title{\textbf{\huge{Title}}}
+
+\date{\today}
+\author{Sanchit Nevgi}
+% If you need a big title
+% \maketitle
+
+\section*{Learning Neural Templates for Text Generation}
+
+\begin{itemize}[leftmargin=*,label={}]
+
+\item \textbf{Encoder-Decoder architectures}:
+The Encoder module give a representation of the souce text. The decoder module interprets this representation to generate text.
+Existing architectures are 1. Uninterpretable (blackbox) and 2. Difficult to control the ouput generation (style, content, etc). It is difficult to relate how a word in the output is related to a word in the input.
+\item \textbf{Related Work}: Earlier work in Natural Language generation, have made use of hand-engineered templates. Work has been done to automate these template generation, using clustering methods on similar sentences and then abstracting templated fields.
+\item \textbf{Proposed Approach}: A novel architecture, that uses a Hidden Semi Markov Model decoder (HSMM) that jointly learns the latent templates and output text. According to the authors, it provides a principled approach to template-like text generation. The authors maximize the log-marginal and use RNNs to parameterize a discrete emission distribution
+\item \textbf{Method}: According to standard definitoin, a \textit{record} in a knowledge base (KG) comprises of \textit{type}, \textit{entity}, and \textit{value}. A \textit{template} is a sequence of typed text segments, with parts of the segments filled in by the knowledge base. 
+An HSMM specifies a joint distribution on the observations and latent segments. There are two discrete variables specified for this distribution. $l_t$ is a length variable, that specifies the length of the current segment, and $f_t$ a binary variable that indicates wether segment finishes at time step $t$. The factorized distribution is given by
+\begin{equation}
+    p(y,z,l,f|x;\theta) = \prod\limits_{t=0}^{T-1} p(z_{t+1}, l_{t+1}|z_t,l_t,x)^{f_t} \times \prod\limits_{t=1}^{T} p(y_{t - l_t + 1:t} | z_t, l_t, x)^{f_t}
+\end{equation}
+
+The model is fatorized into, \textbf{Transition} distribution, \textbf{Length} distribution, and \textbf{Emission} distribution.
+
+$p(z_{t+1}|z_t)$ represents the transition distribution. To formulate this, the authors use matrices $\mathbf{A, B}$ as state embeddings and $\mathbf{C}, \mathbf{D}$ as parameterized non-linear functions. The length distrubution is uniform. The emission distribution is modelled as an RNN decoder.
+
+\item \textbf{Learning}: The variables $z, l$ and $f$ are unobserved. They are margnialized over, and maximum log-marginal likelihood is used, by applying standard backpropagation.
+
+\item \textbf{Conclusion}: This method allows for diversity in generation and provides interpretable states. 
+\end{itemize}
+
+\end{document}

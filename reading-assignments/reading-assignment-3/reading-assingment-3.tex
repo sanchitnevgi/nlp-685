@@ -1,0 +1,57 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage[left=10mm,right=10mm]{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
+\usepackage[margin=10pt,font=small,labelfont=bf,labelsep=endash]{caption}
+% \usepackage{tikz}
+
+% Refererencing
+\usepackage[backend=biber,style=alphabetic]{biblatex}
+
+\microtypecontext{spacing=nonfrench}
+
+\graphicspath{ {./images/} }
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{14pt}
+\rhead{\thepage}
+\lhead{Reading Assignment 3}
+
+\begin{document}
+\title{\textbf{\huge{Title}}}
+
+\date{\today}
+\author{Sanchit Nevgi}
+% If you need a big title
+% \maketitle
+
+\section*{BERT: Pre-training of Deep Bidirectional Transformers for Language \\ Understanding}
+
+The stated purpose of BERT model, is to train deep bi-directional representations of unlabelled text, conditioned on \textbf{left and right} context. It can be further fine-tuned by adding an additional layer. \\
+There are few datasets with good quality annotations, however, there is an abundance of unlabelled text. The BERT models are pre-trained on this unsupervised data using a \textbf{Masked Language Modelling} objective. This model can then be applied to other tasks by \textbf{transfer learning}. \\
+There are two approaches to apply pre-trained embeddings for down-stream tasks, \textit{feature based} and \textit{fine-tuning}. The major limitations of these approaches are that standard language models are uni-directional which limit the choice of architectures that can be used during pre-training.
+
+\subsection*{Related Work}
+
+\textbf{ELMo}: ELMo uses deep bi-directional LSTMs, to generate contextualized word embeddings. At each layer, the output of the left-to-right hidden representation and right-to-left representations are concatenated to obtain the contextualized embedding. ELMo advanced the state-of-the-art on multiple NLP tasks.\\
+\textbf{Open AI GPT}: Fine-tuning approach --- ALl the model parameters are fine-tuned using uni-directional language models on the down-stream tasks.
+
+\subsection*{Training}
+\begin{enumerate}
+    \item \textbf{Masked Language Modelling}: 15\% for the words chosen randomly in the input sentence is masked using the \texttt{[MASK]} token. The model then aims to predice the vocabulary id of the masked token. The MLM objective enables the representation to use both the left and right context. Additionally, BERT uses a next sentence prediction task. BERT is trained in two stages, \textit{pre-training} and \textit{fine-tuining}. In \textit{pre-training}, the model is trained on un-labeled data, while in \textit{fine-tuning}, all of the pre-trained parameters are fine-tuned using labeled data. BERT has a unified architecture across all the tasks.
+    \item \textbf{Tokenization}: A sentence is first tokenized, a \texttt{[CLS]} token is added to the start of the sentence. Multipel sentences are separated by the \texttt{[SEP]} token. BERT uses a concatenation of WordPiece, Positional and Segment embeddings. The segment embeddings (attenstion mask) represents which sentence the particular token belongs to.
+    \item \textbf{Architecture}: BERT uses stacked encoder-decoder Transformer blocks. where each block has multiple self-attention heads. For \textit{Sequence classification} tasks, the hidden state corresponding to the \texttt{[CLS]} token is used.
+\end{enumerate}
+\end{document}

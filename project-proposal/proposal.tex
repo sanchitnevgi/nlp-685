@@ -1,0 +1,63 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage[left=10mm,right=10mm]{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{siunitx}
+\usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
+\usepackage[margin=10pt,font=small,labelfont=bf,labelsep=endash]{caption}
+
+\usepackage[backend=biber,style=authoryear]{biblatex}
+
+\microtypecontext{spacing=nonfrench}
+\addbibresource{proposal.bib}
+
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{14pt}
+\rhead{\thepage}
+\lhead{Assignment}
+
+\begin{document}
+\title{Multi-domain Task completion dialogue system}
+
+\author{Sanchit Nevgi \\ College of Information and Computer Science \\ University of Massachusetts, Amherst}
+\maketitle
+
+\section*{Introduction}
+Dialogue systems can be broadly classified based on three use-cases --- Task-Oriented, Question \& Answering, and Social chatbots. Traditionally, hand-crafted features were used to build dialogue systesm. With advancements in deep learning, neural models have been trained in an end-to-end manner to decrease reliance on manual feature-engineering. These models have demonstrated ability to adapt to user \textit{utterance paraphrasing} and handle Out-of-Vocabulary (OOV) terms. There is an increasing interest in building complex bots that span multiple sub-domains to accomplish a complex user goal such as travel planning \cite{li2020results}
+
+\section*{Problem outline}
+
+The Dialogue State Tracking challenge (DSTC) \cite{kim2019eighth} is an annual challenge aimed to push the frontier in dialogue systems. In the selected task --- "Multi-Domain Task-Completion Dialog Challenge", we have to build an \textbf{end-to-end multi-domain} dialog system for tourist information desk setting. 
+
+\medskip \noindent \textbf{Evalualtion}: Although the challenge makes use of both automatic and human evaluation metric, we forego the human evaluation. Two metrics are used for automatic evalution; \textit{Task success rate} and \textit{precision/recall} score for slots prediction. We follow a similar methodology.
+
+\section*{Methodology}
+
+\noindent \textbf{Baseline}: A simple baseline would be to predict a constant for all utterances. For a stronger baseline, we follow the proposed baseline model in the challenge \cite{li2020results}, which is a modular pipeline approach consisting of multi-intent language understanding model (MILU), a rule-based dialog policy and template-based NLG module.
+
+\smallskip \noindent \textbf{Approach}: We reuse the rule-based DST and Dialogue Policy from the supplied ConvLab package. As a preliminary experiment, we propose using contextualized BERT embeddings in the NLU module of the pipeline. Further, we experiment with attention mechanisms over the sentences which have shown to handle domain switch. Another approach to consider is to move from template-based NLG methods to neural based language models. We analyse the viability of each approach to select one for further investigation. 
+
+\section*{Datasets}
+
+DSTC-8 motivates employin the \textsc{MultiWOZ} 2.1 dataset \cite{budzianowski2018multiwoz} as the corpus. \textsc{MultiWOZ} is a multi-domain dialog dataset, where dialog agents interact with tourists to satisfy their demands, such as making hotel reservation. It covers 7 domains in tourist information setting including \textit{Attracting, Hospital, Police, Hotel, Restaurant, Taxi, and Train}. It consits of 10,438 dialogs with 1,000 dialogs used for validation and test respectively.
+No additional human annotation is needed.
+
+\section*{Software and Frameworks}
+
+\noindent \textbf{ConvLab}: ConvLab \cite{lee2019convlab} is a tool introduced to enable researchers to compare different approaches, perform evaluation, etc. It includes pre-trained models for dialog system components such as NLU, NLG, RL-policies along with user simulators. ConvLab suggests using \texttt{nltk} library for tokenization.
+
+\noindent \textbf{PyTorch}: For building neural models, we will make use of the current version of PyTorch.
+
+\printbibliography
+
+\end{document}
